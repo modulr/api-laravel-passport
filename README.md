@@ -1,15 +1,17 @@
 # Modulr API Laravel Passport
 
+API documentation [here](https://documenter.getpostman.com/view/1657780/RW1ejGzL) in postman
 
 ## Table of Contents
 
-- [Install](#install)
+- [Installation](#installation)
 - [Dependencies](#dependencies)
 - [Routes](#routes)
     - [Authentication](#authentication)
+    - [Password Reset](#password-reset)
 
 
-### Install
+### Installation
 
 1. Clone repository
 ```
@@ -55,7 +57,7 @@ DB_PASSWORD=secret
 ### Dependencies
 
 
-- [laravolt/avatar](https://github.com/laravolt/avatar) - Generate Avatars
+- [laravolt/avatar](https://github.com/laravolt/avatar) - Generate avatars for users of application
 
 
 ### Routes
@@ -67,3 +69,10 @@ DB_PASSWORD=secret
 - POST /auth/signup
 - GET /auth/signup/activate/{token}
 - GET /auth/user
+
+
+##### Password Reset
+
+- POST /password/create
+- GET /password/find/{token}
+- POST /password/reset

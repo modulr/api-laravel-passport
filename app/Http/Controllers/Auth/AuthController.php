@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Storage;
 use Avatar;
@@ -21,7 +21,7 @@ class AuthController extends Controller
      * @param  [string] email
      * @param  [string] password
      * @param  [string] password_confirmation
-     * @return [json] message, errors
+     * @return [string] message
      */
     public function signup(Request $request)
     {
@@ -46,7 +46,7 @@ class AuthController extends Controller
         $user->notify(new SignupActivate($user));
 
         return response()->json([
-            'message' => 'Successfully created user!'
+            'message' => __('auth.signup_success')
         ], 201);
     }
 
@@ -54,7 +54,7 @@ class AuthController extends Controller
      * Confirm your account activate user
      *
      * @param  [type] $token
-     * @return [string] error
+     * @return [string] message
      * @return [obj] user
      */
     public function signupActivate($token)
@@ -63,7 +63,7 @@ class AuthController extends Controller
 
         if (!$user) {
             return response()->json([
-                'message' => 'This activation token is invalid.'
+                'message' => __('auth.token_invalid')
             ], 404);
         }
 
@@ -82,7 +82,9 @@ class AuthController extends Controller
      * @param  [string] email
      * @param  [string] password
      * @param  [boolean] remember_me
-     * @return [json] token, error
+     * @return [string] access_token
+     * @return [string] token_type
+     * @return [string] expires_at
      */
     public function login(Request $request)
     {
@@ -95,11 +97,10 @@ class AuthController extends Controller
         $credentials['active'] = 1;
         $credentials['deleted_at'] = null;
 
-        if(!Auth::attempt($credentials)){
+        if(!Auth::attempt($credentials))
             return response()->json([
-                'message' => 'Unauthorized'
+                'message' => __('auth.login_failed')
             ], 401);
-        }
 
         $user = $request->user();
 
@@ -121,21 +122,21 @@ class AuthController extends Controller
     /**
      * Log the user out (Invalidate the token).
      *
-     * @return [json] message
+     * @return [string] message
      */
     public function logout(Request $request)
     {
         $request->user()->token()->revoke();
 
         return response()->json([
-            'message' => 'Successfully logged out'
+            'message' => __('auth.logout_success')
         ]);
     }
 
     /**
      * Get the authenticated User.
      *
-     * @return [json] user obj
+     * @return [json] user object
      */
     public function user(Request $request)
     {

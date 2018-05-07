@@ -18,3 +18,4 @@ use Illuminate\Http\Request;
 // });
 
 require __DIR__ . '/auth/auth.php';
+require __DIR__ . '/auth/passwordReset.php';
