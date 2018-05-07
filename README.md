@@ -65,4 +65,5 @@ DB_PASSWORD=secret
 - POST /auth/login
 - GET /auth/logout
 - POST /auth/signup
+- GET /auth/signup/activate/{token}
 - GET /auth/user

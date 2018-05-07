@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Storage;
 use Avatar;
+use App\Notifications\SignupActivate;
+use App\Notifications\SignupSuccess;
 use App\User;
 
 class AuthController extends Controller
@@ -32,7 +34,8 @@ class AuthController extends Controller
         $user = new User([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => bcrypt($request->password)
+            'password' => bcrypt($request->password),
+            'activation_token' => str_random(60)
         ]);
 
         $user->save();
@@ -40,9 +43,37 @@ class AuthController extends Controller
         $avatar = Avatar::create($user->name)->getImageObject()->encode('png');
         Storage::put('avatars/'.$user->id.'/avatar.png', (string) $avatar);
 
+        $user->notify(new SignupActivate($user));
+
         return response()->json([
             'message' => 'Successfully created user!'
         ], 201);
+    }
+
+    /**
+     * Confirm your account activate user
+     *
+     * @param  [type] $token
+     * @return [string] error
+     * @return [obj] user
+     */
+    public function signupActivate($token)
+    {
+        $user = User::where('activation_token', $token)->first();
+
+        if (!$user) {
+            return response()->json([
+                'message' => 'This activation token is invalid.'
+            ], 404);
+        }
+
+        $user->active = true;
+        $user->activation_token = '';
+        $user->save();
+
+        $user->notify(new SignupSuccess($user));
+
+        return $user;
     }
 
     /**
@@ -66,12 +97,11 @@ class AuthController extends Controller
 
         if(!Auth::attempt($credentials)){
             return response()->json([
-                'error' => 'Unauthorized'
+                'message' => 'Unauthorized'
             ], 401);
         }
 
         $user = $request->user();
-        //$token = $user->createToken('auth')->accessToken;
 
         $tokenResult = $user->createToken('Personal Access Token');
         $token = $tokenResult->token;
