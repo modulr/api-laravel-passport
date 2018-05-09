@@ -15,7 +15,7 @@ use App\User;
 class AuthController extends Controller
 {
     /**
-     * Create an user deactivate and send notification to account confirm
+     * Create user deactivate and send notification to activate account user
      *
      * @param  [string] name
      * @param  [string] email
@@ -51,7 +51,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Confirm your account activate user
+     * Confirm your account user (Activate)
      *
      * @param  [type] $token
      * @return [string] message
@@ -77,7 +77,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Loggin user and create token
+     * Login user and create token
      *
      * @param  [string] email
      * @param  [string] password
@@ -91,6 +91,7 @@ class AuthController extends Controller
         $request->validate([
             'email' => 'required|string|email',
             'password' => 'required|string',
+            'remember_me' => 'boolean'
         ]);
 
         $credentials = request(['email', 'password']);
@@ -120,7 +121,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Log the user out (Invalidate the token).
+     * Logout user (Revoke the token)
      *
      * @return [string] message
      */
@@ -134,7 +135,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Get the authenticated User.
+     * Get the authenticated User
      *
      * @return [json] user object
      */
