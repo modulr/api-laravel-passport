@@ -15,7 +15,7 @@ API documentation [here](https://documenter.getpostman.com/view/1657780/RW1ejGzL
 
 1. Clone repository
 ```
-$ git clone https://github.com/modulr/api-laravel.git
+$ git clone https://github.com/modulr/api-laravel-passport.git
 ```
 
 2. Enter folder
