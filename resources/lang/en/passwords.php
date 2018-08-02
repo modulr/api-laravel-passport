@@ -27,6 +27,6 @@ return [
     'email_password_reset_success_subject' => 'Your password has been changed',
     'email_password_reset_success_line1' => 'Your password has been changed for your account.',
     'email_password_reset_success_line2' => 'If you did change password, no further action is required.',
-    'email_password_reset_success_line3' => 'If you did not change password, protect your account.',
+    'email_password_reset_success_line3' => 'If you did not change password, protect your account.'
 
 ];
