@@ -7,7 +7,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class SignupSuccess extends Notification implements ShouldQueue
+class SignupActivated extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -41,9 +41,9 @@ class SignupSuccess extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject('Welcome to '. env('APP_NAME', 'Modulr'))
-                    ->line('You have completed your registration! your account is active.')
-                    ->line('Now you can be login.');
+                    ->subject(__('auth.email_signup_activated_subject', ['appName' => env('APP_NAME', 'Modulr')]))
+                    ->line(__('auth.email_signup_activated_line1'))
+                    ->line(__('auth.email_signup_activated_line2'));
     }
 
     /**

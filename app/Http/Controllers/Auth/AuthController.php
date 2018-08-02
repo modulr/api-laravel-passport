@@ -9,7 +9,7 @@ use Carbon\Carbon;
 use Storage;
 use Avatar;
 use App\Notifications\SignupActivate;
-use App\Notifications\SignupSuccess;
+use App\Notifications\SignupActivated;
 use App\User;
 
 class AuthController extends Controller
@@ -71,7 +71,7 @@ class AuthController extends Controller
         $user->activation_token = '';
         $user->save();
 
-        $user->notify(new SignupSuccess($user));
+        $user->notify(new SignupActivated($user));
 
         return $user;
     }
